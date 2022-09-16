@@ -20,7 +20,7 @@ def loadToBq(dataframe,table_name,ad_trigger,fm):
     client = bigquery.Client.from_service_account_json(SVC_ACNT_PATH)
 
     job_config = bigquery.LoadJobConfig(
-        autodetect=ad_trigger, source_format=bigquery.SourceFormat.CSV
+        autodetect=ad_trigger, allow_quoted_newlines=True, source_format=bigquery.SourceFormat.CSV
     )
 
     project_id = PROJECT_ID #order 1
