@@ -46,7 +46,7 @@ for file in os.listdir(directory):
     if filename.endswith(".csv"):
         filepath = TARGET_FOLDER + filename
         table_name = filename.split(".")[0]
-        df=pd.read_csv(filepath)
+        df=pd.read_csv(filepath, low_memory=True, engine='c')
         n = 25000  #chunk row size
         list_df = [df[i:i+n] for i in range(0,df.shape[0],n)]
         for index, chunks in enumerate(list_df):
