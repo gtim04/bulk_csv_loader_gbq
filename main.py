@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import time
 from google.cloud import bigquery
 from dotenv import load_dotenv
 from pathlib import Path
@@ -46,14 +47,16 @@ for file in os.listdir(directory):
     if filename.endswith(".csv"):
         filepath = TARGET_FOLDER + filename
         table_name = filename.split(".")[0]
-        df=pd.read_csv(filepath, low_memory=True, engine='c')
-        n = 25000  #chunk row size
+        df=pd.read_csv(filepath, low_memory=False, engine='c')
+        n = 100000  #chunk row size
         list_df = [df[i:i+n] for i in range(0,df.shape[0],n)]
         for index, chunks in enumerate(list_df):
             if index == 0:
                 loadToBq(chunks,table_name,True,True)
             else:
                 loadToBq(chunks,table_name,False,False)
+            print("Sleeping... (failure prevention)")
+            time.sleep(10)
         continue
     else:
         continue
